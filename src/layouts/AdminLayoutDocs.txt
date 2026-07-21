@@ -1,0 +1,19 @@
+Initial render: isCollapsed = false.
+
+Top navigation icon:
+   On mobile, the hamburger icon toggles the mobile drawer (open/close).
+   On desktop, it toggles the collapsed state of the sidebar.
+
+Sidebar behavior:
+   If isCollapsed = true, only the first character of each menu item is displayed.
+   If isCollapsed = false, the full menu text is displayed.
+   isMobile changes based on the screen size and controls the isMobileDrawerOpen state.
+
+Sidebar display:
+   display: none on base (mobile).
+   display: flex on md (medium screens) and larger.
+
+Mobile view (base):
+   The sidebar is hidden using display: none.
+   The mobile drawer is hidden by default.
+   Clicking the hamburger icon in the top navigation toggles the drawer to open or close.
