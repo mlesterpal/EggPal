@@ -55,8 +55,8 @@ function SidebarNavContent({
             title={isCollapsed ? item.label : undefined}
           >
             <NavLink to={item.to}>
-              {isCollapsed ? item.label.charAt(0) : item.label} // If collapsed,
-              show only the first character of the label
+              {isCollapsed ? item.label.charAt(0) : item.label}{" "}
+              {/* If collapsed, show only the first character of the label */}
             </NavLink>
           </Button>
         );
