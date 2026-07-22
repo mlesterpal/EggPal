@@ -4,9 +4,14 @@ import {
   Drawer,
   Flex,
   Heading,
+  HStack,
+  Icon,
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { FaEgg } from "react-icons/fa";
+import { FaGear, FaHouse } from "react-icons/fa6";
+import type { IconType } from "react-icons";
 import { NavLink, useLocation } from "react-router-dom";
 
 interface AdminSidebarProps {
@@ -19,12 +24,14 @@ interface AdminSidebarProps {
 interface NavItem {
   label: string;
   to: string;
+  icon: IconType;
 }
 
 // Map the route to the label
 const navItems: NavItem[] = [
-  { label: "Dashboard", to: "/admin" },
-  { label: "Settings", to: "/admin/settings" },
+  { label: "Dashboard", to: "/dashboard", icon: FaHouse },
+  { label: "Egg Production", to: "/egg-production", icon: FaEgg },
+  { label: "Settings", to: "/settings", icon: FaGear },
 ];
 
 interface SidebarNavContentProps {
@@ -54,9 +61,16 @@ function SidebarNavContent({
             onClick={onNavigate}
             title={isCollapsed ? item.label : undefined}
           >
-            <NavLink to={item.to}>
-              {isCollapsed ? item.label.charAt(0) : item.label}{" "}
-              {/* If collapsed, show only the first character of the label */}
+            <NavLink to={item.to} style={{ width: "100%" }}>
+              <HStack
+                gap={2}
+                justifyContent={isCollapsed ? "center" : "flex-start"}
+                width="full"
+              >
+                {/* If not collapsed, show the icon if not collapsed  show also the label*/}
+                <Icon as={item.icon} boxSize={4} />
+                {!isCollapsed && <Text>{item.label}</Text>}
+              </HStack>
             </NavLink>
           </Button>
         );
