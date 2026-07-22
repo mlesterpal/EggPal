@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { AdminSidebar } from "../components/admin/AdminLayout/AdminSidebar";
 import { AdminTopNav } from "../components/admin/AdminLayout/AdminTopNav";
+import HarvestModal from "../components/HarvestModal";
 
 export function AdminLayout() {
   const isMobile = useBreakpointValue({ base: true, md: false }) ?? false; // Whether the screen is mobile
@@ -12,12 +13,12 @@ export function AdminLayout() {
   // When the screen size changes, set the collapsed state and mobile drawer open state
   useEffect(() => {
     if (isMobile) {
-      setIsCollapsed(true);
       setIsMobileDrawerOpen(false);
       return;
     }
 
     setIsMobileDrawerOpen(false);
+    setIsCollapsed(false);
   }, [isMobile]);
 
   return (
@@ -40,6 +41,8 @@ export function AdminLayout() {
           <Outlet />
         </Box>
       </Flex>
+      {/* Show the harvest modal when the user is on the admin layout */}
+      <HarvestModal />
     </Flex>
   );
 }
