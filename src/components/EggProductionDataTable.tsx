@@ -8,6 +8,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { useState } from "react";
 
 type HarvestDetails = {
   small: number;
@@ -47,10 +48,13 @@ const harvestRows: HarvestRow[] = [
 const formatHarvestDetails = ({ small, medium, large }: HarvestDetails) =>
   `S${small} M${medium} L${large}`;
 
-const getTotalEggs = ({ small, medium, large }: HarvestDetails) =>
-  small + medium + large;
+const getTotalEggs = ({ small, medium, large }: HarvestDetails) => small + medium + large;
 
 const EggProductionDataTable = () => {
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [harvestedBy, setHarvestedBy] = useState("");
+
   return (
     <VStack align="stretch" gap={4}>
       {/* Filter Box */}
@@ -70,15 +74,19 @@ const EggProductionDataTable = () => {
         >
           <Field.Root w={{ base: "full", md: "180px" }} flexShrink={0}>
             <Field.Label>From</Field.Label>
-            <Input type="date" />
+            <Input type="date" value={fromDate} onChange={(event) => setFromDate(event.target.value)} />
           </Field.Root>
           <Field.Root w={{ base: "full", md: "180px" }} flexShrink={0}>
             <Field.Label>To</Field.Label>
-            <Input type="date" />
+            <Input type="date" value={toDate} onChange={(event) => setToDate(event.target.value)} />
           </Field.Root>
           <Field.Root w={{ base: "full", md: "220px" }} flexShrink={0}>
             <Field.Label>Harvested By</Field.Label>
-            <Input placeholder="e.g. Mark Lester" />
+            <Input
+              placeholder="e.g. Mark Lester"
+              value={harvestedBy}
+              onChange={(event) => setHarvestedBy(event.target.value)}
+            />
           </Field.Root>
           <HStack
             w={{ base: "full", md: "auto" }}
