@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { AdminLayout } from "../layouts/AdminLayout";
 import DashboardPage from "../pages/DashboardPage";
 import EggProductionPage from "../pages/EggProductionPage";
+import FinancePage from "../pages/FinancePage";
 
 const AppRoutes = () => {
   return (
@@ -10,6 +11,7 @@ const AppRoutes = () => {
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="egg-production" element={<EggProductionPage />} />
+        <Route path="finance" element={<FinancePage />} />
       </Route>
     </Routes>
   );
