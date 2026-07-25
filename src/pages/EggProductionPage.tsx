@@ -1,4 +1,4 @@
-import EggProductionDataTable from "../components/EggProductionDataTable";
+import EggProductionDataTable from "../components/eggproduction/EggProductionDataTable";
 
 const EggProductionPage = () => {
   return <EggProductionDataTable />;
