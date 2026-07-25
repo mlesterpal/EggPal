@@ -1,6 +1,7 @@
 import { SimpleGrid, VStack } from "@chakra-ui/react";
 import EggProductionBySizeDashboard from "../components/dashboard/EggProductionBySizeDashboard";
 import EggProductionAnalysisCardDashboard from "../components/dashboard/EggProductionAnalysisCardDashboard";
+import EggSalesChartDashboard from "../components/dashboard/EggSalesChartDashboard";
 import HarvestTodayDashboard from "../components/dashboard/HarvestTodayDashboard";
 import MarketAnalysisCardDashboard from "../components/dashboard/MarketAnalysisCardDashboard";
 
@@ -19,6 +20,7 @@ const DashboardPage = () => {
       </SimpleGrid>
       <SimpleGrid columns={{ base: 1, sm: 2, xl: 2 }} gap={3}>
         <EggProductionBySizeDashboard />
+        <EggSalesChartDashboard />
       </SimpleGrid>
     </VStack>
   );

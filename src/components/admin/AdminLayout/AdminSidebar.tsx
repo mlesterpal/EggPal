@@ -10,7 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { FaEgg } from "react-icons/fa";
-import { FaGear, FaHouse } from "react-icons/fa6";
+import { FaGear, FaHouse, FaMoneyBillTrendUp } from "react-icons/fa6";
 import type { IconType } from "react-icons";
 import { NavLink, useLocation } from "react-router-dom";
 
@@ -31,6 +31,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: "Dashboard", to: "/dashboard", icon: FaHouse },
   { label: "Egg Production", to: "/egg-production", icon: FaEgg },
+  { label: "Finance", to: "/finance", icon: FaMoneyBillTrendUp },
   { label: "Settings", to: "/settings", icon: FaGear },
 ];
 

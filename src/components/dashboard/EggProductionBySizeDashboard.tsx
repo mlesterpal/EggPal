@@ -67,7 +67,7 @@ const EggProductionBySizeDashboard = () => {
     () =>
       monthRows.map((row) => ({
         ...row, // spread the row object
-        dayLabel: row.date.slice(-2), // get the day from the date
+        dayLabel: row.date.slice(-2), // get the day from the date, slice(-2) is used to get the last 2 characters of the date
       })),
     [monthRows], // dependencies for the useMemo hook
   );
