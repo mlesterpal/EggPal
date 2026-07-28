@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Card,
+  Field,
   HStack,
   Icon,
   NumberInput,
@@ -9,15 +10,20 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import type { EggHarvestPayload } from "../entity/payload/EggHarvestPayload";
+import { useLogHarvest } from "../hooks/EggHarvestRepository";
+import { toaster } from "../components/ui/toaster";
 
 type EggSizeKey = "S" | "M" | "L" | "XL" | "Cracked";
 
-type HarvestCounts = Record<EggSizeKey, string>;
+type LogHarvestFormValues = Record<EggSizeKey, string>;
 
 //ReadonlyArray is a type that is used to create a readonly array
+// eggSizeOptions used to display the egg size options in the form as label and key
 const eggSizeOptions: ReadonlyArray<{ key: EggSizeKey; label: string }> = [
   { key: "S", label: "Small (S)" },
   { key: "M", label: "Medium (M)" },
@@ -26,7 +32,7 @@ const eggSizeOptions: ReadonlyArray<{ key: EggSizeKey; label: string }> = [
   { key: "Cracked", label: "Cracked" },
 ];
 
-const initialCounts: HarvestCounts = {
+const initialValues: LogHarvestFormValues = {
   S: "0",
   M: "0",
   L: "0",
@@ -44,41 +50,50 @@ const sanitizeCount = (value: string) => {
 
 const LogHarvestPage = () => {
   const navigate = useNavigate();
-  const [counts, setCounts] = useState<HarvestCounts>(initialCounts);
+  // the purpose of control is exmaple: if the user type 123 in the S field then the value will be 123 and if the user type 123 in the M field then the value will be 123 and if the user type 123 in the L field then the value will be 123 and if the user type 123 in the XL field then the value will be 123 and if the user type 123 in the Cracked field then the value will be 123
+  const { control, handleSubmit, watch } = useForm<LogHarvestFormValues>({
+    defaultValues: initialValues,
+  });
+  const counts = watch(); // watch purpose is to watch the changes in the form and update the total eggs
+  const { mutate, isPending } = useLogHarvest(); //useLogHarvest is a hook that is used to log the harvest
 
-  // usememo if other component changes if nothing changed on counts then it will not re-render
   const totalEggs = useMemo(
     () =>
       eggSizeOptions.reduce(
-        (total, size) => total + sanitizeCount(counts[size.key]),
+        (total, size) => total + sanitizeCount(counts[size.key] ?? "0"),
         0,
       ),
     [counts],
   );
 
-  //onCountChange is a function that is used to update the counts of the eggs for specific size
-  const onCountChange = (size: EggSizeKey, value: string) => {
-    setCounts((prev) => ({
-      ...prev,
-      [size]: value,
-    }));
-  };
-
-  const handleSave = () => {
-    //payload is a object that contains the harvest date, counts, and total eggs
-    const payload = {
-      harvestDate: new Date().toISOString(),
-      counts: {
-        S: sanitizeCount(counts.S),
-        M: sanitizeCount(counts.M),
-        L: sanitizeCount(counts.L),
-        XL: sanitizeCount(counts.XL),
-        Cracked: sanitizeCount(counts.Cracked),
-      },
-      totalEggs,
+  const onSubmit = (values: LogHarvestFormValues) => {
+    const payload: EggHarvestPayload = {
+      HarvestDate: new Date().toISOString(),
+      S: sanitizeCount(values.S),
+      M: sanitizeCount(values.M),
+      L: sanitizeCount(values.L),
+      XL: sanitizeCount(values.XL),
+      Cracked: sanitizeCount(values.Cracked),
+      TotalEggs: totalEggs,
     };
 
-    console.log("Harvest record (UI-only):", payload);
+    mutate(payload, {
+      onSuccess: (message) => {
+        toaster.create({
+          type: "success",
+          title: "Harvest saved",
+          description: message || "Harvest record saved successfully.",
+        });
+        navigate("/");
+      },
+      onError: (error) => {
+        toaster.create({
+          type: "error",
+          title: "Unable to save harvest",
+          description: error.message || "Please try again.",
+        });
+      },
+    });
   };
 
   return (
@@ -112,40 +127,49 @@ const LogHarvestPage = () => {
           </Text>
         </Stack>
 
-        <Card.Root borderWidth="1px" borderColor="border.muted">
-          <Card.Body p={{ base: 4, md: 5 }}>
-            <Stack gap={4}>
-              {eggSizeOptions.map((size) => (
-                <Stack key={size.key} gap={2}>
-                  <Text fontWeight="medium">{size.label}</Text>
-                  <NumberInput.Root
-                    min={0}
-                    step={1}
-                    value={counts[size.key]}
-                    onValueChange={(details: { value: string }) =>
-                      onCountChange(size.key, details.value)
-                    }
-                  >
-                    <NumberInput.Input
-                      inputMode="numeric"
-                      placeholder="0"
-                      aria-label={`${size.label} egg count`}
+        <Box as="form" id="log-harvest-form" onSubmit={handleSubmit(onSubmit)}>
+          <Card.Root borderWidth="1px" borderColor="border.muted">
+            <Card.Body p={{ base: 4, md: 5 }}>
+              <Stack gap={4}>
+                {eggSizeOptions.map((size) => (
+                  <Field.Root key={size.key}>
+                    <Field.Label>{size.label}</Field.Label>
+                    <Controller
+                      control={control}
+                      name={size.key} //size.key example: S, M, L, XL, Cracked
+                      render={({ field }) => (
+                        <NumberInput.Root
+                          min={0}
+                          step={1}
+                          value={field.value}
+                          onValueChange={
+                            (details: { value: string }) =>
+                              field.onChange(details.value) //field.onChange is a function that is used to change the value of the field
+                          }
+                        >
+                          <NumberInput.Input
+                            inputMode="numeric"
+                            placeholder="0"
+                            aria-label={`${size.label} egg count`}
+                          />
+                          <NumberInput.Control>
+                            <NumberInput.IncrementTrigger />
+                            <NumberInput.DecrementTrigger />
+                          </NumberInput.Control>
+                        </NumberInput.Root>
+                      )}
                     />
-                    <NumberInput.Control>
-                      <NumberInput.IncrementTrigger />
-                      <NumberInput.DecrementTrigger />
-                    </NumberInput.Control>
-                  </NumberInput.Root>
-                </Stack>
-              ))}
+                  </Field.Root>
+                ))}
 
-              <HStack justify="space-between" pt={2}>
-                <Text color="fg.muted">Total Eggs</Text>
-                <Text fontWeight="semibold">{totalEggs}</Text>
-              </HStack>
-            </Stack>
-          </Card.Body>
-        </Card.Root>
+                <HStack justify="space-between" pt={2}>
+                  <Text color="fg.muted">Total Eggs</Text>
+                  <Text fontWeight="semibold">{totalEggs}</Text>
+                </HStack>
+              </Stack>
+            </Card.Body>
+          </Card.Root>
+        </Box>
       </VStack>
 
       <Box
@@ -164,7 +188,9 @@ const LogHarvestPage = () => {
           <Button
             size="lg"
             w="full"
-            onClick={handleSave}
+            type="submit"
+            form="log-harvest-form"
+            loading={isPending}
             aria-label="Save harvest record"
           >
             Save
