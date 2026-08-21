@@ -11,25 +11,36 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import {
   buildLogSalesPayload,
+  hasAnySalesValue,
   initialValues,
   type LogSalesFormValues,
   salesRows,
+  useSubmitSales,
 } from "./LogSalesWorker";
 import "../css/styles/LogSalesPage.css";
 
 const LogSalesPage = () => {
-  const { control, handleSubmit } = useForm<LogSalesFormValues>({
+  const { control, handleSubmit, watch } = useForm<LogSalesFormValues>({
     defaultValues: initialValues,
   });
+  const values = watch();
   const navigate = useNavigate();
+  const { submitSales, isPending } = useSubmitSales();
+
+  const hasAnySales = useMemo(
+    () => hasAnySalesValue(values),
+    [values],
+  );
+
   const onSubmit = (data: LogSalesFormValues) => {
     const payload = buildLogSalesPayload(data);
-    console.log(payload);
+    submitSales(payload);
   };
 
   return (
@@ -120,8 +131,16 @@ const LogSalesPage = () => {
 
       <Box className="log-sales-footer">
         <Box className="log-sales-footer-inner">
-          <Button className="log-sales-save-btn" size="lg" type="submit" form="log-sales-form">
-            Save
+          <Button
+            className="log-sales-save-btn"
+            size="lg"
+            type="submit"
+            form="log-sales-form"
+            loading={isPending}
+            disabled={!hasAnySales || isPending}
+            aria-label="Save sales record"
+          >
+            {isPending ? "Saving..." : "Save"}
           </Button>
         </Box>
       </Box>
