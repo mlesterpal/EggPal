@@ -1,0 +1,100 @@
+.log-harvest-page {
+  min-height: 100dvh;
+  background: var(--chakra-colors-bg);
+  padding: 1.5rem 1rem 6rem;
+}
+
+.log-harvest-container {
+  max-width: 640px;
+  margin: 0 auto;
+  gap: 1.5rem;
+}
+
+.log-harvest-back-btn {
+  align-self: flex-start;
+  background-color: black;
+  color: white;
+}
+
+.log-harvest-header {
+  gap: 0.5rem;
+}
+
+.log-harvest-title {
+  font-size: var(--chakra-font-sizes-2xl);
+  font-weight: var(--chakra-font-weights-bold);
+}
+
+.log-harvest-subtitle {
+  color: var(--chakra-colors-fg-muted);
+}
+
+.log-harvest-card {
+  border-width: 1px;
+  border-color: var(--chakra-colors-border-muted);
+}
+
+.log-harvest-card-body {
+  padding: 1rem;
+}
+
+.log-harvest-fields {
+  gap: 1rem;
+}
+
+.log-harvest-number-input {
+  width: 100%;
+}
+
+.log-harvest-total-row {
+  justify-content: space-between;
+  padding-top: 0.5rem;
+}
+
+.log-harvest-total-label {
+  color: var(--chakra-colors-fg-muted);
+}
+
+.log-harvest-total-value {
+  font-weight: var(--chakra-font-weights-semibold);
+}
+
+.log-harvest-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--chakra-z-index-docked);
+  background: var(--chakra-colors-bg);
+  border-top: 1px solid var(--chakra-colors-border-muted);
+  padding: 0.75rem 1rem;
+}
+
+.log-harvest-footer-inner {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.log-harvest-save-btn {
+  width: 100%;
+}
+
+@media (min-width: 48em) {
+  .log-harvest-page {
+    padding: 2rem 1.5rem;
+  }
+
+  .log-harvest-title {
+    font-size: var(--chakra-font-sizes-3xl);
+  }
+
+  .log-harvest-card-body {
+    padding: 1.25rem;
+  }
+
+  .log-harvest-footer {
+    position: static;
+    border-top: 0;
+    padding: 0;
+  }
+}
