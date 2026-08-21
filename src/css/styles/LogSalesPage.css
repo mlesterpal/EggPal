@@ -1,0 +1,91 @@
+.log-sales-page {
+  min-height: 100dvh;
+  background: var(--chakra-colors-bg);
+  padding: 1.5rem 1rem 6rem;
+}
+
+.log-sales-container {
+  max-width: 640px;
+  margin: 0 auto;
+  gap: 1.5rem;
+}
+
+.log-sales-back-btn {
+  align-self: flex-start;
+  background-color: black;
+  color: white;
+}
+
+.log-sales-header {
+  gap: 0.5rem;
+}
+
+.log-sales-title {
+  font-size: var(--chakra-font-sizes-2xl);
+  font-weight: var(--chakra-font-weights-bold);
+}
+
+.log-sales-subtitle {
+  color: var(--chakra-colors-fg-muted);
+}
+
+.log-sales-card {
+  border-width: 1px;
+  border-color: var(--chakra-colors-border-muted);
+}
+
+.log-sales-card-body {
+  padding: 1rem;
+}
+
+.log-sales-fields {
+  gap: 1rem;
+}
+
+.log-sales-row {
+  gap: 1rem;
+}
+
+.log-sales-number-input {
+  width: 100%;
+}
+
+.log-sales-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--chakra-z-index-docked);
+  background: var(--chakra-colors-bg);
+  border-top: 1px solid var(--chakra-colors-border-muted);
+  padding: 0.75rem 1rem;
+}
+
+.log-sales-footer-inner {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.log-sales-save-btn {
+  width: 100%;
+}
+
+@media (min-width: 48em) {
+  .log-sales-page {
+    padding: 2rem 1.5rem;
+  }
+
+  .log-sales-title {
+    font-size: var(--chakra-font-sizes-3xl);
+  }
+
+  .log-sales-card-body {
+    padding: 1.25rem;
+  }
+
+  .log-sales-footer {
+    position: static;
+    border-top: 0;
+    padding: 0;
+  }
+}

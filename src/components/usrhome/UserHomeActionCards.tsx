@@ -62,6 +62,9 @@ const UserHomeActionCards = () => {
     if (actionId === "harvest") {
       navigate("/log-harvest");
     }
+    if (actionId === "sales") {
+      navigate("/log-sales");
+    }
   };
 
   return (

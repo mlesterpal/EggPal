@@ -5,12 +5,14 @@ import EggProductionPage from "../pages/EggProductionPage";
 import FinancePage from "../pages/FinancePage";
 import LogHarvestPage from "../pages/LogHarvestPage";
 import UserHomePage from "../pages/UserHomePage";
+import LogSalesPage from "../pages/LogSalesPage";
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<UserHomePage />} />
       <Route path="/log-harvest" element={<LogHarvestPage />} />
+      <Route path="/log-sales" element={<LogSalesPage />} />
       <Route element={<AdminLayout />}>
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/egg-production" element={<EggProductionPage />} />
