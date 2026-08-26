@@ -1,6 +1,6 @@
 import type { LogSalesPayload } from "../entity/payload/LogSalespayload";
-import { logSales } from "../services/LogSalesService";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getTotalSales, logSales } from "../services/LogSalesService";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useLogSales = () => {
   const queryClient = useQueryClient();
@@ -12,5 +12,12 @@ export const useLogSales = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["egg-sales"] });
     },
+  });
+};
+
+export const useGetTotalSales = () => {
+  return useQuery<number, Error>({
+    queryKey: ["total-sales"],
+    queryFn: () => getTotalSales(),
   });
 };
