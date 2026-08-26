@@ -7,13 +7,18 @@ import {
   Text,
   Flex,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { FaEgg, FaPlus } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
+import { useGetHarvestTodaySummary } from "../../hooks/EggHarvestRepository";
 
 const HarvestTodayDashboard = () => {
-  const [isAMHarvest] = useState(true); // show today's AM harvest data if true else show the plus icon
-  const [isPMHarvest] = useState(false); // show today's PM harvest data if true else show the plus icon
+  const { data } = useGetHarvestTodaySummary();
+  const isAMHarvest = data?.amHarvest.exists ?? false;
+  const isPMHarvest = data?.pmHarvest.exists ?? false;
+  const amQuantity = data?.amHarvest.quantity ?? 0;
+  const pmQuantity = data?.pmHarvest.quantity ?? 0;
+  const amDisplayTime = data?.amHarvest.displayTime ?? "8:00 AM";
+  const pmDisplayTime = data?.pmHarvest.displayTime ?? "4:00 PM";
 
   return (
     <Box width="full" maxW="520px">
@@ -66,12 +71,12 @@ const HarvestTodayDashboard = () => {
             >
               <HStack justify="center" gap="2" mb={2}>
                 <Text fontSize="3xl" fontWeight="bold" lineHeight="1">
-                  12
+                  {amQuantity}
                 </Text>
                 <Icon as={FaEgg} boxSize={5} color="orange.400" />
               </HStack>
               <Text color="fg.muted" fontWeight="medium">
-                8:00 AM
+                {amDisplayTime}
               </Text>
             </Flex>
           ) : (
@@ -116,12 +121,12 @@ const HarvestTodayDashboard = () => {
               </Text>
               <HStack justify="center" gap="2" mb={2}>
                 <Text fontSize="3xl" fontWeight="bold" lineHeight="1">
-                  22
+                  {pmQuantity}
                 </Text>
                 <Icon as={FaEgg} boxSize={5} color="orange.400" />
               </HStack>
               <Text color="fg.muted" fontWeight="medium">
-                4:00 PM
+                {pmDisplayTime}
               </Text>
             </Flex>
           ) : (

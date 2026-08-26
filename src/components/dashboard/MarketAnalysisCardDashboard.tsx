@@ -10,21 +10,33 @@ import {
 } from "@chakra-ui/react";
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
 import { FiExternalLink } from "react-icons/fi";
-
-type MarketMetric = {
-  title: "Profit" | "Sales" | "Expenses";
-  value: string;
-  changePercent: number;
-  isIncrease: boolean;
-};
-
-const marketMetrics: MarketMetric[] = [
-  { title: "Profit", value: "$28,450", changePercent: 8.1, isIncrease: true },
-  { title: "Sales", value: "$96,320", changePercent: 5.4, isIncrease: true },
-  { title: "Expenses", value: "$67,870", changePercent: 3.2, isIncrease: false },
-];
+import { useGetTotalSales } from "../../hooks/EggSalesRepository";
 
 const MarketAnalysisCardDashboard = () => {
+  const { data: totalSales } = useGetTotalSales();
+
+  type MarketMetric = {
+    title: "Profit" | "Sales" | "Expenses";
+    value: string;
+    changePercent: number;
+    isIncrease: boolean;
+  };
+
+  const marketMetrics: MarketMetric[] = [
+    { title: "Profit", value: "$28,450", changePercent: 8.1, isIncrease: true },
+    {
+      title: "Sales",
+      value: totalSales?.toString() ?? "0",
+      changePercent: 5.4,
+      isIncrease: true,
+    },
+    {
+      title: "Expenses",
+      value: "$67,870",
+      changePercent: 3.2,
+      isIncrease: false,
+    },
+  ];
   return (
     <Stack gap={4}>
       <Text fontWeight="semibold">Market Analysis</Text>
@@ -71,7 +83,9 @@ const MarketAnalysisCardDashboard = () => {
               borderRadius="md"
             >
               <HStack gap={1}>
-                <Icon as={metric.isIncrease ? FaArrowTrendUp : FaArrowTrendDown} />
+                <Icon
+                  as={metric.isIncrease ? FaArrowTrendUp : FaArrowTrendDown}
+                />
                 <Text fontSize="xs">
                   {metric.isIncrease ? "+" : "-"}
                   {metric.changePercent}% vs last month

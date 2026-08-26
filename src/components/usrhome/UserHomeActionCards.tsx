@@ -41,7 +41,7 @@ const userActions: UserAction[] = [
     accentColor: "green.300",
     iconColor: "green.600",
     iconBg: "green.100",
-    statusText: "Coming soon",
+    statusText: "Tap to start",
   },
   {
     id: "expenses",
@@ -64,6 +64,9 @@ const UserHomeActionCards = () => {
     }
     if (actionId === "sales") {
       navigate("/log-sales");
+    }
+    if (actionId === "expenses") {
+      navigate("/log-expenses");
     }
   };
 
@@ -93,7 +96,7 @@ const UserHomeActionCards = () => {
               textAlign="left"
               justifyContent="flex-start"
               w="full"
-              minH="120px"
+              minH={{ base: "120px", md: "140px" }}
               aria-label={action.title}
               rounded="lg"
               _hover={{ bg: "blackAlpha.50" }}
@@ -117,11 +120,16 @@ const UserHomeActionCards = () => {
                 >
                   <Icon as={action.icon} boxSize={5} color={action.iconColor} />
                 </Box>
-                <Stack gap={1}>
+                <Stack gap={1} flex="1" minW={0}>
                   <Text fontWeight="semibold" fontSize="lg">
                     {action.title}
                   </Text>
-                  <Text fontSize="sm" color="fg.muted">
+                  <Text
+                    fontSize="sm"
+                    color="fg.muted"
+                    whiteSpace="normal"
+                    wordBreak="break-word"
+                  >
                     {action.description}
                   </Text>
                   <Text
